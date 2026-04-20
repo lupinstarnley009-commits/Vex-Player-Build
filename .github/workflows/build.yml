@@ -1,0 +1,31 @@
+name: Build VEX PLAYER Windows
+
+on: 
+  workflow_dispatch: # Hii itakuruhusu u-run kwa mkono muda wowote
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Build EXE
+      run: |
+        pyinstaller --noconfirm --onefile --windowed --icon "icon.ico" --name "VEX_PLAYER_FINAL" vex_main.py
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: VEX_PLAYER_WINDOWS_EXE
+        path: dist/VEX_PLAYER_FINAL.exe
